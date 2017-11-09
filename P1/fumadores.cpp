@@ -30,9 +30,9 @@ Semaphore sem_est = 0;
 //----------------------------------------------------------------------
 
 template< int min, int max > int aleatorio() {
-  static default_random_engine generador( (random_device())() );
-  static uniform_int_distribution<int> distribucion_uniforme( min, max ) ;
-  return distribucion_uniforme( generador );
+  static default_random_engine generador((random_device())());
+  static uniform_int_distribution<int> distribucion_uniforme(min, max);
+  return distribucion_uniforme(generador);
 }
 
 //----------------------------------------------------------------------
@@ -50,50 +50,50 @@ void funcion_hebra_estanquero() {
 //-------------------------------------------------------------------------
 // Función que simula la acción de fumar, como un retardo aleatoria de la hebra
 
-void fumar( int num_fumador )
-{
+void fumar(int num_fumador) {
 
-   // calcular milisegundos aleatorios de duración de la acción de fumar)
-   chrono::milliseconds duracion_fumar( aleatorio<20,200>() );
+  // calcular milisegundos aleatorios de duración de la acción de fumar)
+  chrono::milliseconds duracion_fumar(aleatorio<20,200>());
 
-   // informa de que comienza a fumar
+  // informa de que comienza a fumar
 
-    cout << "Fumador " << num_fumador << "  :"
-          << " empieza a fumar (" << duracion_fumar.count() << " milisegundos)" << endl;
+  cout << "Fumador " << num_fumador << "  :"
+       << " empieza a fumar (" << duracion_fumar.count() << " milisegundos)" << endl;
 
-   // espera bloqueada un tiempo igual a ''duracion_fumar' milisegundos
-   this_thread::sleep_for( duracion_fumar );
+  // espera bloqueada un tiempo igual a ''duracion_fumar' milisegundos
+  this_thread::sleep_for(duracion_fumar);
 
-   // informa de que ha terminado de fumar
+  // informa de que ha terminado de fumar
 
-    cout << "Fumador " << num_fumador << "  : termina de fumar, comienza espera de ingrediente." << endl;
-
+  cout << "Fumador " << num_fumador << "  : termina de fumar, comienza espera de ingrediente." << endl;
 }
 
 //----------------------------------------------------------------------
 // función que ejecuta la hebra del fumador
-void  funcion_hebra_fumador( int num_fumador )
-{
-   while( true )
-   {
-     sem_wait(sem[num_fumador]); // Espera el ingrediente
-     sem_signal(sem_est); // Coger ingrediente
-     fumar(num_fumador); // Fumar
-   }
+
+void  funcion_hebra_fumador(int num_fumador) {
+  while(true) {
+    sem_wait(sem[num_fumador]); // Espera el ingrediente
+    sem_signal(sem_est); // Coger ingrediente
+    fumar(num_fumador); // Fumar
+  }
 }
 
 //----------------------------------------------------------------------
 
 int main() {
+  // Inicializamos los semáforos de los fumadores a 0
+  // Comienzan esperando por su ingrediente
   for(int i = 0; i < n_fumadores; ++i)
     sem.push_back(Semaphore(0));
-   thread fumadores[n_fumadores];
-   
-   for(int i = 0; i < n_fumadores; ++i)
-     fumadores[i] = thread(funcion_hebra_fumador, i);
-   thread estanquero = thread(funcion_hebra_estanquero);
 
-   for(int i = 0; i < n_fumadores; ++i)
-     fumadores[i].join();
-   estanquero.join();
+  // Creamos y lanzamos las hebras fumadores y estanquero
+  thread fumadores[n_fumadores];   
+  for(int i = 0; i < n_fumadores; ++i)
+    fumadores[i] = thread(funcion_hebra_fumador, i);
+  thread estanquero = thread(funcion_hebra_estanquero);
+
+  for(int i = 0; i < n_fumadores; ++i)
+    fumadores[i].join();
+  estanquero.join();
 }
