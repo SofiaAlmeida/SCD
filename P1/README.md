@@ -8,7 +8,7 @@ En este caso se ha realizado una implementación donde los datos que se producen
 
 Para compilar se utiliza `g++ -std=c++11 -I. -o ./bin/prodcons-LIFO prodcons-LIFO.cpp Semaphore.cpp -lpthread`
 
-Alternativamente, se puede utilizar el `make` proporcionado, estos programas se compilan y ejecutan con las reglas `pcl` y `pcf`.
+Alternativamente, se puede utilizar el `makefile` proporcionado, estos programas se compilan y ejecutan con las reglas `pcl` y `pcf`.
 
 ## Problema de los fumadores
 
@@ -20,4 +20,4 @@ Este problema se encuentra resuelto en el archivo `fumadores.cpp` y se puede com
 
 Se implementa una variante donde si el número total de cigarros fumados es par, los fumadores avisan al estanquero después de fumar, y si es impar, lo hacen antes.
 
-Utilizando el `make` las reglas que compilan y ejecutan estos programas son `fu` y `fu2`.
+Utilizando el `makefile` las reglas que compilan y ejecutan estos programas son `fu` y `fu2`.
