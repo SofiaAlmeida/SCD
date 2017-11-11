@@ -19,7 +19,7 @@ using namespace std;
 using namespace HM;
 
 const int n_clientes = 10; // número de clientes
-mutex mtx; // mutex de escritura en pantalla
+const int aforo_max = 7; // número máximo de clientes en la sala de espera
 
 //**********************************************************************
 // plantilla de función para generar un entero aleatorio uniformemente
@@ -63,24 +63,29 @@ MBarberiaSU::MBarberiaSU() {
 // ---------------------------------------------------------------------
 
 void MBarberiaSU::cortar_pelo(int i) {
-  if(n != 0 || cortando) {
-    n++;
-    sala_espera.wait(); // Espera a que el barbero esté libre
-    n--; // Sale de la sala de espera
+  cout << "Cliente " << i << " entra a la barbería" << endl;
+   
+  if(n == aforo_max) {
+    cout << "	   Cliente " << i << " encuentra la barbería llena" << endl;
   }
+  else {
+    if(n != 0 || cortando) {
+      n++;
+      sala_espera.wait(); // Espera a que el barbero esté libre
+      n--; // Sale de la sala de espera
+    }
 
-  barbero.signal(); // Despierta al barbero
-  cortando = true; // Actualiza valor
+    barbero.signal(); // Despierta al barbero
+    cortando = true; // Actualiza valor
 
-  mtx.lock();
-  cout << "		     	Cliente " << i << " se corta el pelo" << endl;
-  mtx.unlock();
+    cout << "	       	Cliente " << i << " va a cortarse el pelo" << endl;
   
-  sala_corte.wait(); // Espera a que el barbero termine de cortar
+    sala_corte.wait(); // Espera a que el barbero termine de cortar
   
-  mtx.lock();
-  cout << "		     		Cliente " << i << " termina de cortarse el pelo" << endl;
-  mtx.unlock();
+    cout << "		Cliente " << i << " termina de cortarse el pelo" << endl;
+  }
+  
+  cout << "					Cliente " << i << " sale de la barbería" << endl;
 }
 
 // ---------------------------------------------------------------------
@@ -134,16 +139,7 @@ void esperar_fuera_barberia() {
 
 void  funcion_hebra_cliente(int num_cliente, MRef<MBarberiaSU> monitor) {
   while(true) {
-    mtx.lock();
-    cout << "Cliente " << num_cliente << " entra a la barbería" << endl;
-    mtx.unlock();
-
     monitor->cortar_pelo(num_cliente);
-    
-    mtx.lock();
-    cout << "Cliente " << num_cliente << " sale de la barbería" << endl;
-    mtx.unlock();
-    
     esperar_fuera_barberia(); 
   }
 }
