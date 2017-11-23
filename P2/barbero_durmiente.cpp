@@ -42,7 +42,7 @@ private:
   bool cortando; // true si hay un cliente al que le están cortando el pelo
   CondVar sala_espera, // cola donde están los clientes de la sala de espera
     sala_corte, // cola donde están los clientes cortándose el pelo
-    barbero; // cola en la que el barbero duerme
+    barbero; // cola en la que el barbero espera a que haya clientes
 public:
   MBarberiaSU(); // constructor
   void cortar_pelo(int i);
