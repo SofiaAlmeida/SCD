@@ -76,7 +76,7 @@ void funcion_filosofos(int id) {
     MPI_Ssend(&id, 1, MPI_INT, id_ten_der, etiq_liberar, MPI_COMM_WORLD);
 
     // Piensa
-    cout << "Filosofo " << id << " comienza a pensar" << endl;
+    cout << "Filósofo " << id << " comienza a pensar" << endl;
     sleep_for(milliseconds(aleatorio<10,100>()));
   }
 }
