@@ -4,4 +4,4 @@ Repositorio con las prácticas de la asignatura Sistemas Concurrentes y Distribi
 - P1: productor/consumidor y fumadores usando semáforos
 - P2: fumadores y barbero durmiente usando monitores
 - S2: productor/consumidor usando monitores
-- P3: productor/consumidor y filósofos usando MPI
+- P3: productor/consumidor y cena de los filósofos usando MPI
