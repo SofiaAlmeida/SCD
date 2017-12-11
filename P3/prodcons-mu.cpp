@@ -84,7 +84,7 @@ void funcion_consumidor(int n) {
   unsigned max = num_items / num_con;
   for(unsigned int i = 0; i < max; i++) {
     MPI_Ssend(&peticion, 1, MPI_INT, id_buffer, etiq_con, MPI_COMM_WORLD);
-    MPI_Recv (&valor_rec, 1, MPI_INT, id_buffer, etiq_buf, MPI_COMM_WORLD,&estado );
+    MPI_Recv (&valor_rec, 1, MPI_INT, id_buffer, etiq_buf, MPI_COMM_WORLD,&estado);
     cout << "Consumidor " << n << " ha recibido valor " << valor_rec << endl;
     consumir(valor_rec, n);
   }
