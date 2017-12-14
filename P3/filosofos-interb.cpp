@@ -1,14 +1,9 @@
-// -----------------------------------------------------------------------------
-//
-// Sistemas concurrentes y Distribuidos.
-// Práctica 3. Implementación de algoritmos distribuidos con MPI
-//
-// Archivo: filosofos-plantilla.cpp
-// Implementación del problema de los filósofos (sin camarero).
-// Historial:
-// Actualizado a C++11 en Septiembre de 2017
-// -----------------------------------------------------------------------------
-
+/*
+  Sofía Almeida Bruno
+  Sistemas concurrentes y distribuidos
+  Práctica 3. Implementación de algoritmos distribuidos con MPI
+  Implementación del problema de los filósofos (sin camarero)
+*/
 
 #include <mpi.h>
 #include <thread> // this_thread::sleep_for
@@ -40,9 +35,9 @@ template<int min, int max> int aleatorio() {
 }
 
 // ---------------------------------------------------------------------
-
+// Los filófos solicitan ambos tenedores, comen y piensan en bucle
 void funcion_filosofos(int id) {
-  int id_ten_izq = (id+1)              % num_procesos, //id. tenedor izq.
+  int id_ten_izq = (id+1)            % num_procesos, //id. tenedor izq.
     id_ten_der = (id+num_procesos-1) % num_procesos; //id. tenedor der.
 
   while (true) {
@@ -72,7 +67,7 @@ void funcion_filosofos(int id) {
   }
 }
 // ---------------------------------------------------------------------
-
+// Los tenedores pueden ser ocupados y liberados
 void funcion_tenedores(int id) {
   int valor, id_filosofo;  // valor recibido, identificador del filósofo
   MPI_Status estado;       // metadatos de las dos recepciones

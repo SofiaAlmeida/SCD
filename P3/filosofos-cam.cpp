@@ -1,14 +1,9 @@
-// -----------------------------------------------------------------------------
-//
-// Sistemas concurrentes y Distribuidos.
-// Práctica 3. Implementación de algoritmos distribuidos con MPI
-//
-// Archivo: filosofos-plantilla.cpp
-// Implementación del problema de los filósofos (sin camarero).
-// Historial:
-// Actualizado a C++11 en Septiembre de 2017
-// -----------------------------------------------------------------------------
-
+/*
+  Sofía Almeida Bruno
+  Sistemas concurrentes y distribuidos
+  Práctica 3. Implementación de algoritmos distribuidos con MPI
+  Implementación del problema de los filósofos (con camarero)
+*/
 
 #include <mpi.h>
 #include <thread> // this_thread::sleep_for
@@ -45,8 +40,8 @@ template<int min, int max> int aleatorio() {
 // ---------------------------------------------------------------------
 
 void funcion_filosofos(int id) {
-  int id_ten_izq = (id+1)              % num_procesos, //id. tenedor izq.
-    id_ten_der = (id+num_procesos-1) % num_procesos; //id. tenedor der.
+  int id_ten_izq = (id+1)              % (num_procesos - 1), //id. tenedor izq.
+    id_ten_der = (id+num_procesos-2) % (num_procesos - 1); //id. tenedor der.
 
   while (true) {
     // Se sienta
@@ -119,7 +114,7 @@ void funcion_camarero(int id) {
     // Determinar qué mensajes puede recibir
     if(cont == 0) 	// Si la mesa está vacía
       etiq = etiq_sentarse;
-    else if (cont == num_filosofos) // Si la mesa está llena
+    else if (cont == 4) // Si la mesa está llena
       etiq = etiq_levantarse;
     else 		// Si no está ni vacía ni llena
       etiq = MPI_ANY_TAG;
